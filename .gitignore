@@ -1,0 +1,5 @@
+# local preview + OS cruft
+.DS_Store
+Thumbs.db
+*.log
+.playwright-mcp/
