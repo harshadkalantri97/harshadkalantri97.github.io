@@ -12,7 +12,16 @@
 <meta property="og:title" content="Harshad Kalantri — Backend Engineer" />
 <meta property="og:description" content="Java/Spring backend engineer. Parsers, ETL, concurrency, JVM tuning, Docker." />
 <meta property="og:url" content="https://harshadkalantri97.github.io/" />
+<meta property="og:site_name" content="Harshad Kalantri" />
+<meta property="og:image" content="https://harshadkalantri97.github.io/og-image.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Harshad Kalantri — Backend Engineer. Java, Spring, parsers, ETL, Docker." />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Harshad Kalantri — Backend Engineer" />
+<meta name="twitter:description" content="Java/Spring backend engineer. Parsers, ETL, concurrency, JVM tuning, Docker." />
+<meta name="twitter:image" content="https://harshadkalantri97.github.io/og-image.png" />
 <link rel="canonical" href="https://harshadkalantri97.github.io/" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -198,7 +207,7 @@ kbd{
 }
 .burger{display:none}
 
-@media (max-width:900px){
+@media (max-width:1080px){
   .navlinks{
     position:fixed;inset:var(--nav-h) 0 auto 0;flex-direction:column;align-items:stretch;gap:2px;
     background:var(--bg-elev);border-bottom:1px solid var(--line);padding:14px 18px 22px;
@@ -602,10 +611,119 @@ kbd{
 .cmdk li.none{color:var(--text-faint);justify-content:center;cursor:default}
 
 /* ============================================================
+   JSON PLAYGROUND
+   ============================================================ */
+.pg{margin-top:40px}
+.pg-bar{display:flex;flex-wrap:wrap;gap:14px 20px;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line);position:relative;z-index:1}
+.pg-samples{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.pg-lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-faint);margin-right:4px}
+.pg-chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:13px;color:var(--text-dim);transition:.2s}
+.pg-chip:hover{color:var(--text);border-color:var(--line-strong)}
+.pg-chip.on{border-color:var(--a1);color:var(--a1);background:color-mix(in srgb,var(--a1) 10%,transparent)}
+.pg-opts{display:flex;flex-wrap:wrap;gap:10px 14px}
+.pg-sel{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text-faint)}
+.pg-sel span{font-family:"JetBrains Mono",monospace;letter-spacing:.04em}
+.pg-sel select{background:var(--bg-elev);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:6px 9px;font:inherit;font-size:13px;max-width:200px;cursor:pointer}
+.pg-sel select:focus{outline:none;border-color:var(--a1)}
+.pg-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);position:relative;z-index:1}
+.pg-pane{display:flex;flex-direction:column;min-width:0}
+.pg-pane+.pg-pane{border-left:1px solid var(--line)}
+@media (max-width:860px){
+  .pg-grid{grid-template-columns:1fr}
+  .pg-pane+.pg-pane{border-left:0;border-top:1px solid var(--line)}
+  #pgIn{height:280px}
+  .pg-out{height:auto;max-height:380px}
+}
+.pg-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px;border-bottom:1px solid var(--line);min-height:46px;font-size:12px;color:var(--text-faint)}
+.pg-head .mono{font-size:12px}
+.pg-status{font-family:"JetBrains Mono",monospace;font-size:11.5px}
+.pg-status.ok{color:#34d399}
+.pg-status.bad{color:#f87171}
+#pgIn{
+  height:420px;resize:vertical;width:100%;border:0;outline:none;background:transparent;color:var(--text);
+  padding:14px 16px;font:12.5px/1.6 "JetBrains Mono",monospace;tab-size:2;white-space:pre;
+}
+#pgIn:focus{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--a1) 40%,transparent)}
+.pg-out{height:420px;overflow:auto;font:12.5px/1.55 "JetBrains Mono",monospace}
+.pg-out:focus{outline:none;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--a1) 40%,transparent)}
+.pg-out pre{margin:0;padding:14px 16px;white-space:pre;color:var(--text-dim)}
+.pg-out pre .kw{color:var(--a2);font-weight:500}
+.pg-out table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}
+.pg-out th,.pg-out td{padding:7px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+.pg-out th{position:sticky;top:0;z-index:1;background:var(--bg-elev);color:var(--a1);font-weight:500;font-size:11.5px}
+.pg-out td{color:var(--text-dim)}
+.pg-out td.num{text-align:right;color:var(--text)}
+.pg-out td.nul{color:var(--text-faint);font-style:italic}
+.pg-out td.rn,.pg-out th.rn{color:var(--text-faint);text-align:right;user-select:none}
+.pg-out tr.grp td{background:color-mix(in srgb,var(--a2) 11%,var(--bg-elev));color:var(--a2);font-weight:500;font-size:11.5px}
+.pg-out .more{padding:12px 16px;color:var(--text-faint);font-size:12px}
+.pg-err{padding:18px 16px;color:#f87171;white-space:pre-wrap}
+.pg-tabs{display:flex;gap:4px}
+.pg-tab{padding:5px 11px;border-radius:8px;font-size:12.5px;color:var(--text-dim);transition:.2s}
+.pg-tab:hover{color:var(--text)}
+.pg-tab.on{background:var(--surface-2);color:var(--text)}
+.pg-copy{font-size:12px;padding:5px 11px;border-radius:8px;border:1px solid var(--line);color:var(--text-dim);transition:.2s}
+.pg-copy:hover{color:var(--a1);border-color:var(--a1)}
+.pg-stats{
+  display:flex;flex-wrap:wrap;gap:8px 22px;padding:13px 18px;border-top:1px solid var(--line);
+  font:12px "JetBrains Mono",monospace;color:var(--text-faint);position:relative;z-index:1;
+}
+.pg-stats b{color:var(--text);font-weight:600}
+.pg-stats .hot b{color:var(--a1)}
+.pg-how{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:18px}
+.pg-how div{padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-size:13.5px;color:var(--text-dim)}
+.pg-how b{display:block;color:var(--text);font-size:14px;margin-bottom:3px}
+.pg-how code{font-size:12px;color:var(--a1);background:var(--surface-2);padding:1px 6px;border-radius:5px}
+
+/* ============================================================
+   TERMINAL MODE
+   ============================================================ */
+.shell-cta{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 18px;border-top:1px solid var(--line);border-radius:0 0 14px 14px;
+  font:12.5px "JetBrains Mono",monospace;color:var(--a1);text-align:left;transition:background .2s;
+}
+.shell-cta:hover{background:var(--surface)}
+.shell-cta .cur{display:inline-block;width:7px;height:13px;background:var(--a1);vertical-align:-2px;margin-left:3px;animation:blink 1s steps(1) infinite}
+
+.term{position:fixed;inset:0;z-index:210;display:none;align-items:center;justify-content:center;padding:18px}
+.term.open{display:flex}
+.term-veil{position:absolute;inset:0;background:rgba(2,4,10,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fade .2s ease}
+.term-win{
+  position:relative;width:min(880px,100%);height:min(580px,calc(100svh - 36px));
+  display:flex;flex-direction:column;border-radius:16px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);background:#07090f;color:#d6deeb;
+  box-shadow:0 40px 120px -30px rgba(0,0,0,.9),0 0 0 1px rgba(34,211,238,.06);
+  animation:pop .22s cubic-bezier(.2,.8,.3,1);
+}
+.term-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0d1018;border-bottom:1px solid rgba(255,255,255,.08)}
+.term-bar i{width:11px;height:11px;border-radius:50%;display:block}
+.term-bar i:nth-child(1){background:#ff5f57}.term-bar i:nth-child(2){background:#febc2e}.term-bar i:nth-child(3){background:#28c840}
+.term-bar span{margin-left:10px;font:12px "JetBrains Mono",monospace;color:#7c869a}
+.term-x{margin-left:auto;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;color:#7c869a;transition:.2s}
+.term-x:hover{background:rgba(255,255,255,.08);color:#fff}
+.term-body{flex:1;overflow:auto;padding:16px 18px 18px;font:13.5px/1.6 "JetBrains Mono",monospace;cursor:text}
+.term-body .ln{white-space:pre-wrap;word-break:break-word;min-height:1.6em}
+.term-body a{color:#22d3ee;text-decoration:underline;text-underline-offset:3px}
+.t-ok{color:#34d399}.t-acc{color:#22d3ee}.t-acc2{color:#a5b4fc}.t-warn{color:#fbbf24}.t-dim{color:#6b7488}.t-err{color:#f87171}.t-b{color:#fff;font-weight:700}
+.term-line{display:flex;gap:9px;align-items:baseline}
+.term-ps{color:#34d399;white-space:nowrap;flex:none}
+.term-ps b{color:#22d3ee;font-weight:400}
+#termIn{flex:1;min-width:0;background:none;border:0;outline:none;color:#fff;font:inherit;caret-color:#22d3ee;padding:0}
+.term-hint{display:flex;flex-wrap:wrap;gap:6px 18px;padding:9px 16px;border-top:1px solid rgba(255,255,255,.08);background:#0b0e15;font:11.5px "JetBrains Mono",monospace;color:#5d6678}
+.term-hint kbd{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#98a2b6}
+@media (max-width:600px){
+  .term{padding:0}
+  .term-win{width:100%;height:100svh;border-radius:0}
+  .term-body{font-size:12.5px;padding:14px}
+  .term-hint{display:none}
+}
+
+/* ============================================================
    PRINT = ONE-PAGE RESUME
    ============================================================ */
 @media print{
-  body::before,body::after,#net,.nav,.scroll-cue,.totop,.cmdk,.progress,.filters,.hero .cta-row,.stat-card,.rings,.pitch .btn{display:none !important}
+  body::before,body::after,#net,.nav,.scroll-cue,.totop,.cmdk,.term,#playground,.progress,.filters,.hero .cta-row,.stat-card,.rings,.pitch .btn{display:none !important}
   body{background:#fff;color:#000;font-size:11px}
   .section{padding:14px 0;break-inside:avoid}
   .hero{min-height:auto;padding-top:0}
@@ -635,6 +753,7 @@ kbd{
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
       <a href="#achievements">Impact</a>
+      <a href="#playground">Playground</a>
       <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="#contact">Contact</a>
@@ -644,6 +763,9 @@ kbd{
       <button class="kbd-btn" id="openCmd" aria-label="Open command palette">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         Search <kbd>Ctrl K</kbd>
+      </button>
+      <button class="icon-btn" id="navTerm" aria-label="Open terminal" title="Terminal mode ( ` )">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 17 6-6-6-6M12 19h8"/></svg>
       </button>
       <button class="icon-btn" id="themeBtn" aria-label="Toggle colour theme" title="Toggle theme">
         <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -715,7 +837,7 @@ kbd{
       <aside class="stat-card reveal" style="transition-delay:.2s" aria-label="Key metrics">
         <div class="bar"><i></i><i></i><i></i><span>~/harshad — impact.log</span></div>
         <div class="stat-body">
-          <div class="stat"><div class="n" data-count="5" data-dec="1">0<span>+ yrs</span></div><div class="l">Backend engineering</div></div>
+          <div class="stat"><div class="n" data-count="5">0<span>+ yrs</span></div><div class="l">Backend engineering</div></div>
           <div class="stat"><div class="n" data-count="65">0<span>%</span></div><div class="l">Adapter quality lift</div></div>
           <div class="stat"><div class="n" data-count="80">0<span>%</span></div><div class="l">Faster adapter analysis</div></div>
           <div class="stat"><div class="n" data-count="45">0<span>%</span></div><div class="l">Parser speed-up</div></div>
@@ -723,6 +845,10 @@ kbd{
         <div class="stack-line">
           <span>stack:</span><b>Java</b><b>Spring</b><b>SQL</b><b>Docker</b><b>Jenkins</b><b>Linux</b>
         </div>
+        <button class="shell-cta" id="openTerm">
+          <span>$ ./open-terminal.sh<span class="cur" aria-hidden="true"></span></span>
+          <kbd>`</kbd>
+        </button>
       </aside>
     </div>
   </div>
@@ -736,7 +862,7 @@ kbd{
     <div class="reveal">
       <span class="eyebrow">01 — Experience</span>
       <h2 class="h2">Where I've <span class="grad">shipped</span></h2>
-      <p class="lede">4.5 years across network-assurance software, enterprise consulting and applied-analytics education. Tap any role to expand the detail.</p>
+      <p class="lede">5 years across network-assurance software, enterprise consulting and applied-analytics education. Tap any role to expand the detail.</p>
     </div>
 
     <div class="timeline" id="timeline">
@@ -997,11 +1123,84 @@ kbd{
   </div>
 </section>
 
+<!-- ================= JSON PLAYGROUND ================= -->
+<section class="section" id="playground">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">04 — Playground</span>
+      <h2 class="h2">Try the <span class="grad">JSON flattener</span></h2>
+      <p class="lede">
+        A clean-room, in-browser take on the Generic JSON Parser from the Impact section. Paste any nested JSON and
+        watch it turn into database-ready rows. The production parser is proprietary Java; this one runs entirely
+        in your browser — nothing is uploaded.
+      </p>
+    </div>
+
+    <div class="card pg reveal">
+      <div class="pg-bar">
+        <div class="pg-samples" role="group" aria-label="Sample payloads">
+          <span class="pg-lbl">Samples</span>
+          <button class="pg-chip on" data-sample="telecom">Telecom PM counters</button>
+          <button class="pg-chip" data-sample="order">E-commerce order</button>
+          <button class="pg-chip" data-sample="api">Paginated API</button>
+        </div>
+        <div class="pg-opts">
+          <label class="pg-sel"><span>mode</span>
+            <select id="pgMode">
+              <option value="explode">Explode arrays → rows</option>
+              <option value="flat">Flatten → one row</option>
+            </select>
+          </label>
+          <label class="pg-sel"><span>separator</span>
+            <select id="pgSep">
+              <option value=".">.</option>
+              <option value="_">_</option>
+              <option value="/">/</option>
+            </select>
+          </label>
+          <label class="pg-sel"><span>group by</span>
+            <select id="pgGroup"><option value="">none</option></select>
+          </label>
+        </div>
+      </div>
+
+      <div class="pg-grid">
+        <div class="pg-pane">
+          <div class="pg-head">
+            <span class="mono">input.json</span>
+            <span class="pg-status" id="pgStatus" aria-live="polite"></span>
+          </div>
+          <textarea id="pgIn" spellcheck="false" autocomplete="off" aria-label="JSON input"></textarea>
+        </div>
+        <div class="pg-pane">
+          <div class="pg-head">
+            <div class="pg-tabs" role="tablist" aria-label="Output format">
+              <button class="pg-tab on" data-view="table" role="tab" aria-selected="true">Table</button>
+              <button class="pg-tab" data-view="csv" role="tab" aria-selected="false">CSV</button>
+              <button class="pg-tab" data-view="sql" role="tab" aria-selected="false">SQL</button>
+            </div>
+            <button class="pg-copy" id="pgCopy">Copy</button>
+          </div>
+          <div class="pg-out" id="pgOut" tabindex="0" aria-label="Flattened output"></div>
+        </div>
+      </div>
+
+      <div class="pg-stats" id="pgStats"></div>
+    </div>
+
+    <div class="pg-how reveal">
+      <div><b>Flatten</b>Nested keys become column paths — <code>ne.vendor</code>, <code>customer.address.city</code>.</div>
+      <div><b>Explode</b>Each object in an array fans out into its own row, parent fields repeated — like a SQL join.</div>
+      <div><b>Group</b>Rows cluster by any column, ready for aggregation. Export as CSV or typed SQL.</div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= ACADEMIC PROJECTS ================= -->
 <section class="section" id="projects">
   <div class="wrap">
     <div class="reveal">
-      <span class="eyebrow">04 — Academic Projects</span>
+      <span class="eyebrow">05 — Academic Projects</span>
       <h2 class="h2">Academic <span class="grad">projects</span></h2>
       <p class="lede">Full-stack builds from my Simplilearn Java Full Stack programme — the public code behind the fundamentals.</p>
     </div>
@@ -1062,7 +1261,7 @@ kbd{
 <section class="section" id="education">
   <div class="wrap">
     <div class="reveal">
-      <span class="eyebrow">05 — Credentials</span>
+      <span class="eyebrow">06 — Credentials</span>
       <h2 class="h2">Education &amp; <span class="grad">credentials</span></h2>
       <p class="lede">Where the fundamentals came from, and what I've certified since.</p>
     </div>
@@ -1136,7 +1335,7 @@ kbd{
 <section class="section" id="contact">
   <div class="wrap">
     <div class="reveal">
-      <span class="eyebrow">06 — Contact</span>
+      <span class="eyebrow">07 — Contact</span>
       <h2 class="h2">Let's <span class="grad">work together</span></h2>
       <p class="lede">Open to backend engineering roles. Drop a note below and it lands straight in my inbox — I reply within a day.</p>
     </div>
@@ -1232,6 +1431,7 @@ kbd{
           <a href="#experience">Experience</a>
           <a href="#skills">Skills</a>
           <a href="#achievements">Impact</a>
+          <a href="#playground">Playground</a>
           <a href="#projects">Projects</a>
           <a href="#education">Education</a>
           <a href="#contact">Contact</a>
@@ -1249,7 +1449,7 @@ kbd{
     </div>
     <div class="f-bot">
       <span>© <span id="yr"></span> Harshad Kalantri</span>
-      <span class="mono">press <kbd>Ctrl</kbd> <kbd>K</kbd> to jump anywhere</span>
+      <span class="mono"><kbd>Ctrl</kbd> <kbd>K</kbd> to jump anywhere · <kbd>`</kbd> for a terminal</span>
     </div>
   </div>
 </footer>
@@ -1264,6 +1464,31 @@ kbd{
   <div class="panel">
     <input id="cmdInput" type="text" placeholder="Jump to a section or run a command…" autocomplete="off" spellcheck="false" />
     <ul id="cmdList" role="listbox"></ul>
+  </div>
+</div>
+
+<!-- ================= TERMINAL MODE ================= -->
+<div class="term" id="term" role="dialog" aria-modal="true" aria-label="Terminal">
+  <div class="term-veil" data-tclose></div>
+  <div class="term-win">
+    <div class="term-bar">
+      <i></i><i></i><i></i>
+      <span>harshad@portfolio: ~</span>
+      <button class="term-x" data-tclose aria-label="Close terminal">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="term-body" id="termBody">
+      <div id="termOut" aria-live="polite"></div>
+      <div class="term-line">
+        <span class="term-ps">harshad@portfolio:<b>~</b>$</span>
+        <input id="termIn" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command" />
+      </div>
+    </div>
+    <div class="term-hint">
+      <span><kbd>Tab</kbd> complete</span><span><kbd>↑</kbd><kbd>↓</kbd> history</span>
+      <span><kbd>Ctrl</kbd><kbd>L</kbd> clear</span><span><kbd>Esc</kbd> close</span>
+    </div>
   </div>
 </div>
 
@@ -1549,10 +1774,12 @@ kbd{
     { t: "Experience",       h: "section", run: go("#experience") },
     { t: "Skills",           h: "section", run: go("#skills") },
     { t: "Impact",           h: "section", run: go("#achievements") },
+    { t: "JSON playground",  h: "section", run: go("#playground") },
     { t: "Academic projects", h: "section", run: go("#projects") },
+    { t: "Open terminal",    h: "action",  run: () => openTerm() },
     { t: "Education",        h: "section", run: go("#education") },
     { t: "Contact",          h: "section", run: go("#contact") },
-    { t: "Download résumé",  h: "action",  run: () => { const a = document.createElement("a"); a.href = "Harshad-Kalantri-Resume.pdf"; a.download = "Harshad-Kalantri-Resume.pdf"; a.click(); } },
+    { t: "Download résumé",  h: "action",  run: () => downloadResume() },
     { t: "Copy email",       h: "action",  run: () => copyBtn.click() },
     { t: "Email Harshad",    h: "action",  run: () => location.href = "mailto:harshadkalantri@gmail.com" },
     { t: "Verify certification", h: "link", run: () => open("https://success.simplilearn.com/3f941561-8270-47a5-a1e8-e145dc6c98a4", "_blank", "noopener") },
@@ -1596,6 +1823,681 @@ kbd{
       $$("#cmdList li")[cur]?.scrollIntoView({ block: "nearest" });
     }
     if (e.key === "Enter") { e.preventDefault(); runCmd(cur); }
+  });
+
+  /* ---------- shared helpers ---------- */
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const downloadResume = () => {
+    const a = document.createElement("a");
+    a.href = "Harshad-Kalantri-Resume.pdf";
+    a.download = "Harshad-Kalantri-Resume.pdf";
+    a.click();
+  };
+
+  /* ---------- JSON playground ---------- */
+  const pg = {
+    in: $("#pgIn"), out: $("#pgOut"), status: $("#pgStatus"), stats: $("#pgStats"),
+    mode: $("#pgMode"), sep: $("#pgSep"), group: $("#pgGroup"), copy: $("#pgCopy")
+  };
+
+  if (pg.in) {
+    const MAX_ROWS = 2000, MAX_TABLE_ROWS = 500;
+    class RowLimit extends Error {}
+
+    const SAMPLES = {
+      telecom: {
+        groupBy: ["cells", "cellId"],
+        data: {
+          cells: [
+            { cellId: "C1", band: "B3", counters: [
+              { name: "RRC.ConnEstab.Att", value: 1824 },
+              { name: "RRC.ConnEstab.Succ", value: 1801 }
+            ] },
+            { cellId: "C2", band: "B40", counters: [
+              { name: "RRC.ConnEstab.Att", value: 2210 },
+              { name: "RRC.ConnEstab.Succ", value: 2167 },
+              { name: "DRB.UEThpDl", value: 38.6 }
+            ] }
+          ],
+          ne: { id: "ENB-HYD-0142", vendor: "VendorX", region: "Hyderabad" },
+          granularity: "PT15M",
+          timestamp: "2026-10-04T09:15:00Z",
+          collector: "pm-adaptor-07"
+        }
+      },
+      order: {
+        groupBy: null,
+        data: {
+          orderId: "SS-10492",
+          placed: "2026-09-28",
+          customer: { name: "A. Rao", tier: "gold", address: { city: "Pune", pin: "411001" } },
+          items: [
+            { sku: "RUN-AIR-42", qty: 1, price: 4999, tags: ["running", "men"] },
+            { sku: "SOCK-3P", qty: 2, price: 399, tags: ["accessories"] }
+          ],
+          payment: { method: "UPI", status: "captured", paid: true }
+        }
+      },
+      api: {
+        groupBy: ["data", "user", "login"],
+        data: {
+          page: 1,
+          total: 2,
+          data: [
+            { id: 101, user: { login: "dev-a", country: "IN" }, roles: ["admin", "dev"],
+              repos: [{ name: "parser-core", stars: 42 }, { name: "etl-tools", stars: 17 }] },
+            { id: 102, user: { login: "dev-b", country: "DE" }, roles: ["dev"],
+              repos: [{ name: "adapter-sdk", stars: 8 }] }
+          ]
+        }
+      }
+    };
+
+    const isLeaf = v => v === null || typeof v !== "object";
+
+    // Explode: objects merge into a row; arrays of objects fan out into one row each (cartesian across siblings).
+    const expandRows = (v, path, sep) => {
+      const key = path || "value";
+      if (isLeaf(v)) return [{ [key]: v }];
+      if (Array.isArray(v)) {
+        if (!v.length) return [{ [key]: null }];
+        if (v.every(isLeaf)) return [{ [key]: v.join("|") }];
+        const out = [];
+        for (const el of v) {
+          for (const r of expandRows(el, path, sep)) {
+            out.push(r);
+            if (out.length > MAX_ROWS) throw new RowLimit();
+          }
+        }
+        return out;
+      }
+      const entries = Object.entries(v);
+      if (!entries.length) return [{ [key]: null }];
+      let rows = [{}];
+      for (const [k, child] of entries) {
+        const sub = expandRows(child, path ? path + sep + k : k, sep);
+        const next = [];
+        for (const r of rows) {
+          for (const c of sub) {
+            next.push(Object.assign({}, r, c));
+            if (next.length > MAX_ROWS) throw new RowLimit();
+          }
+        }
+        rows = next;
+      }
+      return rows;
+    };
+
+    // Flatten: one row, array indices become path segments.
+    const flattenOne = (v, path, sep, out) => {
+      if (isLeaf(v)) { out[path || "value"] = v; return out; }
+      const keys = Array.isArray(v) ? v.map((_, i) => i) : Object.keys(v);
+      if (!keys.length) { out[path || "value"] = Array.isArray(v) ? "[]" : "{}"; return out; }
+      for (const k of keys) flattenOne(v[k], path ? path + sep + k : String(k), sep, out);
+      return out;
+    };
+
+    const measure = (v, d = 0) => {
+      if (isLeaf(v)) return { depth: d, leaves: 1 };
+      let depth = d, leaves = 0;
+      for (const c of Object.values(v)) {
+        const m = measure(c, d + 1);
+        depth = Math.max(depth, m.depth);
+        leaves += m.leaves;
+      }
+      return { depth, leaves: leaves || 1 };
+    };
+
+    const csvCell = v => {
+      if (v === null || v === undefined) return "";
+      const s = String(v);
+      return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+
+    const sqlIdents = cols => {
+      const used = new Set();
+      return cols.map(c => {
+        let base = c.replace(/[^A-Za-z0-9_]+/g, "_").replace(/^_+|_+$/g, "").toLowerCase() || "col";
+        if (/^[0-9]/.test(base)) base = "c_" + base;
+        let s = base, i = 2;
+        while (used.has(s)) s = base + "_" + i++;
+        used.add(s);
+        return s;
+      });
+    };
+
+    const sqlType = (rows, c) => {
+      let t = null;
+      for (const r of rows) {
+        const v = r[c];
+        if (v === null || v === undefined) continue;
+        const k = typeof v === "boolean" ? "BOOLEAN" : typeof v === "number" ? (Number.isInteger(v) ? "INTEGER" : "NUMERIC") : "TEXT";
+        if (!t) t = k;
+        else if (t !== k) {
+          if ((t === "INTEGER" && k === "NUMERIC") || (t === "NUMERIC" && k === "INTEGER")) t = "NUMERIC";
+          else return "TEXT";
+        }
+      }
+      return t || "TEXT";
+    };
+
+    const sqlVal = v =>
+      v === null || v === undefined ? "NULL"
+      : typeof v === "number" ? String(v)
+      : typeof v === "boolean" ? (v ? "TRUE" : "FALSE")
+      : "'" + String(v).replace(/'/g, "''") + "'";
+
+    let view = "table", sampleGroup = null;
+    const texts = { table: "", csv: "", sql: "" };
+
+    const setStatus = (cls, msg) => { pg.status.className = "pg-status " + cls; pg.status.textContent = msg; };
+
+    const showError = (msg, src) => {
+      const m = /position (\d+)/.exec(msg);
+      if (m && !/line \d+/i.test(msg)) {
+        const pos = +m[1], before = src.slice(0, pos);
+        msg += ` (line ${before.split("\n").length}, column ${pos - before.lastIndexOf("\n")})`;
+      }
+      setStatus("bad", "✗ invalid JSON");
+      pg.out.innerHTML = `<div class="pg-err">${esc(msg)}</div>`;
+      pg.stats.innerHTML = `<span>Fix the JSON on the left to see the output.</span>`;
+      texts.table = texts.csv = texts.sql = "";
+    };
+
+    const renderTable = (cols, rows, groups, groupCol) => {
+      const head = `<thead><tr><th class="rn">#</th>${cols.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead>`;
+      const cell = v =>
+        v === undefined ? "<td></td>"
+        : v === null ? `<td class="nul">null</td>`
+        : typeof v === "number" || typeof v === "boolean" ? `<td class="num">${v}</td>`
+        : `<td>${esc(v)}</td>`;
+      let n = 0, body = "";
+      const rowHtml = r => `<tr><td class="rn">${++n}</td>${cols.map(c => cell(r[c])).join("")}</tr>`;
+      if (groups) {
+        for (const [key, rs] of groups) {
+          if (n >= MAX_TABLE_ROWS) break;
+          body += `<tr class="grp"><td colspan="${cols.length + 1}">${esc(groupCol)} = ${esc(key)} · ${rs.length} row${rs.length === 1 ? "" : "s"}</td></tr>`;
+          for (const r of rs) { if (n >= MAX_TABLE_ROWS) break; body += rowHtml(r); }
+        }
+      } else {
+        for (const r of rows) { if (n >= MAX_TABLE_ROWS) break; body += rowHtml(r); }
+      }
+      const more = rows.length > MAX_TABLE_ROWS
+        ? `<div class="more">Showing first ${MAX_TABLE_ROWS} of ${rows.length} rows — CSV and SQL include all of them.</div>` : "";
+      return `<table>${head}<tbody>${body}</tbody></table>${more}`;
+    };
+
+    const paint = html => { pg.out.innerHTML = html; };
+    let lastTableHtml = "";
+
+    const showView = () => {
+      $$(".pg-tab").forEach(t => {
+        const on = t.dataset.view === view;
+        t.classList.toggle("on", on);
+        t.setAttribute("aria-selected", String(on));
+      });
+      if (!texts.csv) return;
+      if (view === "table") paint(lastTableHtml);
+      else if (view === "csv") paint(`<pre>${esc(texts.csv)}</pre>`);
+      else paint(`<pre>${esc(texts.sql).replace(/\b(CREATE TABLE|INSERT INTO|VALUES|NULL|TRUE|FALSE|INTEGER|NUMERIC|BOOLEAN|TEXT)\b/g, '<span class="kw">$1</span>')}</pre>`);
+    };
+
+    const run = () => {
+      const src = pg.in.value;
+      if (!src.trim()) {
+        setStatus("", "");
+        paint(`<div class="more">Paste some JSON on the left, or pick a sample.</div>`);
+        pg.stats.innerHTML = "";
+        texts.table = texts.csv = texts.sql = "";
+        return;
+      }
+      let data;
+      try { data = JSON.parse(src); }
+      catch (err) { showError(err.message, src); return; }
+
+      const sep = pg.sep.value;
+      const t0 = performance.now();
+      let rows;
+      try {
+        rows = pg.mode.value === "flat" ? [flattenOne(data, "", sep, {})] : expandRows(data, "", sep);
+      } catch (err) {
+        if (err instanceof RowLimit) {
+          showError(`Too many rows (over ${MAX_ROWS}). Sibling arrays multiply against each other in explode mode — try "Flatten → one row".`, "");
+          setStatus("bad", "✗ too many rows");
+          return;
+        }
+        showError(err.message || String(err), "");
+        return;
+      }
+
+      const cols = [], seen = new Set();
+      for (const r of rows) for (const k of Object.keys(r)) if (!seen.has(k)) { seen.add(k); cols.push(k); }
+
+      // group-by options follow the current columns; a sample's suggested column wins on first load
+      const prev = sampleGroup ? sampleGroup.join(sep) : pg.group.value;
+      sampleGroup = null;
+      pg.group.innerHTML = `<option value="">none</option>` + cols.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+      pg.group.value = seen.has(prev) ? prev : "";
+      const g = pg.group.value;
+
+      let groups = null;
+      if (g) {
+        const map = new Map();
+        for (const r of rows) {
+          const key = r[g] === undefined ? "∅" : String(r[g]);
+          if (!map.has(key)) map.set(key, []);
+          map.get(key).push(r);
+        }
+        groups = [...map.entries()];
+        rows = groups.flatMap(([, rs]) => rs);
+      }
+
+      const ms = performance.now() - t0;
+      const { depth, leaves } = measure(data);
+
+      lastTableHtml = renderTable(cols, rows, groups, g);
+      texts.table = [cols.join("\t"), ...rows.map(r => cols.map(c => r[c] ?? "").join("\t"))].join("\n");
+      texts.csv = [cols.map(csvCell).join(","), ...rows.map(r => cols.map(c => csvCell(r[c])).join(","))].join("\n");
+      const ids = sqlIdents(cols), w = Math.max(...ids.map(s => s.length));
+      texts.sql =
+        `CREATE TABLE flattened (\n${ids.map((s, i) => "  " + s.padEnd(w) + "  " + sqlType(rows, cols[i])).join(",\n")}\n);\n\n` +
+        `INSERT INTO flattened (${ids.join(", ")}) VALUES\n${rows.map(r => "  (" + cols.map(c => sqlVal(r[c])).join(", ") + ")").join(",\n")};`;
+
+      setStatus("ok", `✓ valid · ${(new Blob([src]).size / 1024).toFixed(1)} KB`);
+      pg.stats.innerHTML =
+        `<span>depth <b>${depth}</b></span><span>leaf values <b>${leaves}</b></span>` +
+        `<span class="hot">rows <b>${rows.length}</b></span><span class="hot">columns <b>${cols.length}</b></span>` +
+        (groups ? `<span>groups <b>${groups.length}</b></span>` : "") +
+        `<span>transformed in <b>${ms < 1 ? ms.toFixed(2) : ms.toFixed(1)} ms</b></span>`;
+      showView();
+    };
+
+    const loadSample = name => {
+      const s = SAMPLES[name];
+      if (!s) return;
+      $$(".pg-chip").forEach(c => c.classList.toggle("on", c.dataset.sample === name));
+      pg.in.value = JSON.stringify(s.data, null, 2);
+      sampleGroup = s.groupBy;
+      pg.mode.value = "explode";
+      run();
+    };
+
+    let debounce = 0;
+    pg.in.addEventListener("input", () => {
+      $$(".pg-chip").forEach(c => c.classList.remove("on"));
+      clearTimeout(debounce);
+      debounce = setTimeout(run, 220);
+    });
+    [pg.mode, pg.sep, pg.group].forEach(el => el.addEventListener("change", run));
+    $$(".pg-chip").forEach(c => c.addEventListener("click", () => loadSample(c.dataset.sample)));
+    $$(".pg-tab").forEach(t => t.addEventListener("click", () => { view = t.dataset.view; showView(); }));
+
+    pg.copy.addEventListener("click", async () => {
+      const txt = texts[view];
+      if (!txt) return;
+      try {
+        await navigator.clipboard.writeText(txt);
+        pg.copy.textContent = "Copied ✓";
+      } catch {
+        pg.copy.textContent = "Copy failed";
+      }
+      setTimeout(() => { pg.copy.textContent = "Copy"; }, 1400);
+    });
+
+    loadSample("telecom");
+  }
+
+  /* ---------- terminal mode ---------- */
+  const term = $("#term"), termOut = $("#termOut"), termIn = $("#termIn"), termBody = $("#termBody");
+  let termBooted = false, termBusy = false, termLastFocus = null;
+  const termHist = [];
+  let termHIdx = 0;
+
+  const ln = (html = "", cls = "") => {
+    const d = document.createElement("div");
+    d.className = "ln" + (cls ? " " + cls : "");
+    d.innerHTML = html;
+    termOut.appendChild(d);
+    termBody.scrollTop = termBody.scrollHeight;
+  };
+  const txt = (s = "", cls = "") => ln(esc(s), cls);
+  const link = (href, label) => `<a href="${href}" target="_blank" rel="noopener">${esc(label)}</a>`;
+  const span = (cls, s) => `<span class="${cls}">${esc(s)}</span>`;
+  const sleep = ms => new Promise(r => setTimeout(r, reduced ? 0 : ms));
+
+  const SECTIONS = {
+    top: "#top", experience: "#experience", skills: "#skills", impact: "#achievements",
+    playground: "#playground", projects: "#projects", education: "#education", contact: "#contact"
+  };
+  const OPEN = {
+    github: "https://github.com/harshadkalantri97",
+    linkedin: "https://www.linkedin.com/in/harshad-kalantri",
+    cert: "https://success.simplilearn.com/3f941561-8270-47a5-a1e8-e145dc6c98a4"
+  };
+  const FILES = {
+    "about.md": "about", "experience.log": "experience", "skills.json": "skills",
+    "impact.log": "impact", "education.txt": "education", "contact.txt": "contact", "hire.sh": "cat-hire"
+  };
+
+  const gotoSection = name => {
+    const sel = SECTIONS[name];
+    if (!sel) { txt(`goto: unknown section '${name}'. Try: ${Object.keys(SECTIONS).join(", ")}`, "t-err"); return; }
+    ln(`${span("t-dim", "→ scrolling to")} ${span("t-acc", name)}`);
+    setTimeout(() => { closeTerm(); $(sel).scrollIntoView({ behavior: reduced ? "auto" : "smooth" }); }, 380);
+  };
+
+  const CMDS_T = {
+    help() {
+      const rows = [
+        ["whoami", "who is this, in one line"],
+        ["about", "short bio"],
+        ["experience", "work history"],
+        ["skills", "tech stack, as JSON"],
+        ["impact", "measurable outcomes"],
+        ["projects", "academic projects"],
+        ["education", "degree and certification"],
+        ["contact", "ways to reach me"],
+        ["resume", "download the résumé PDF"],
+        ["open <target>", "github · linkedin · cert · resume"],
+        ["goto <section>", Object.keys(SECTIONS).join(" · ")],
+        ["theme [light|dark]", "toggle or set the colour theme"],
+        ["neofetch", "system info, portfolio edition"],
+        ["./hire.sh", "you know you want to"],
+        ["ls · cat · history · clear · date · echo · exit", ""]
+      ];
+      txt("Available commands", "t-b");
+      rows.forEach(([c, d]) => ln(`  ${span("t-acc", c.padEnd(20))}${span("t-dim", d)}`));
+      txt("");
+      ln(span("t-dim", "Tab autocompletes · ↑/↓ browse history · Ctrl+L clears · Esc closes"));
+    },
+    whoami() {
+      ln(span("t-b", "harshad"));
+      txt("Backend engineer — Java/Spring, parsers, ETL, Docker. 5 years. Hyderabad, IN.");
+    },
+    about() {
+      txt("I build reliable backend services and integration adapters for network-assurance");
+      txt("software at MYCOM OSI: high-performance Java parsers, SQL ETL pipelines and REST");
+      txt("integrations, tuned for throughput and shipped in Docker.");
+      txt("");
+      ln(`Off-duty: software architecture rabbit holes, manga, and travelling across India.`, "t-dim");
+    },
+    experience() {
+      const jobs = [
+        ["2021-10 → now", "Software Engineer", "MYCOM OSI", "parsers +65% quality · SQL ETL · Docker · JVM tuning · REST adapters"],
+        ["2019-08 → 2020-07", "Technical Consultant", "Azri Consultancy", "25+ articles · enterprise & API documentation"],
+        ["2019-01 → 2019-06", "Technical Intern", "INSOFE", "ML / AI / big-data blog for 3,000+ alumni"]
+      ];
+      jobs.forEach(([when, role, co, what]) => {
+        ln(`${span("t-dim", when.padEnd(20))}${span("t-b", role.padEnd(23))}${span("t-acc", co)}`);
+        ln(`${" ".repeat(20)}${span("t-dim", what)}`);
+      });
+    },
+    skills() {
+      const s = {
+        languages: ["Java", "SQL", "JavaScript"],
+        core_java: ["Collections", "Streams", "Generics", "Exception Handling", "OOP", "DSA"],
+        frameworks: ["Spring", "Hibernate"],
+        backend: ["REST APIs", "Microservices", "ETL", "JSON/XML/CSV parsing"],
+        concurrency: ["Multithreading", "Thread Safety", "JVM Tuning", "Memory Management"],
+        devops: ["Docker", "Jenkins", "CI/CD", "AWS"],
+        tools: ["Git", "Maven", "Gradle", "Linux", "JUnit"]
+      };
+      const keys = Object.keys(s), w = Math.max(...keys.map(k => k.length)) + 3;
+      txt("{");
+      keys.forEach((k, i) => {
+        const vals = s[k].map(v => span("t-ok", `"${v}"`)).join(", ");
+        ln(`  ${span("t-acc2", (`"${k}":`).padEnd(w))}[${vals}]${i < keys.length - 1 ? "," : ""}`);
+      });
+      txt("}");
+    },
+    impact() {
+      [
+        [" 80%", "IAR Scanner", "faster adapter property analysis"],
+        [" 65%", "Adapter parsers", "software quality lift"],
+        [" 45%", "Generic JSON Parser", "faster than the parsers it replaced"],
+        [" 30%", "Docker migration", "shorter feature dev cycle"],
+        ["  1 ", "SNMP Counter Search", "single source of truth for counters"]
+      ].forEach(([n, what, why]) => ln(`${span("t-warn", "[" + n + "]")}  ${span("t-b", what.padEnd(22))}${span("t-dim", why)}`));
+      txt("");
+      ln(`${span("t-dim", "Try the JSON parser yourself:")} ${span("t-acc", "goto playground")}`);
+    },
+    projects() {
+      ln(`${span("t-dim", "drwxr-xr-x")}  ${span("t-acc", "sporty-shoes/".padEnd(17))}${span("t-dim", "Java · Spring · Hibernate · MySQL  ")}${link("https://github.com/harshadkalantri97/Sporty-Shoes-Phase3", "↗ source")}`);
+      ln(`${span("t-dim", "drwxr-xr-x")}  ${span("t-acc", "icin-banking/".padEnd(17))}${span("t-dim", "Java · AWS · JavaScript            ")}${link("https://github.com/harshadkalantri97/ICINBankingAppSimplilearn", "↗ source")}`);
+      ln(`${span("t-dim", "drwxr-xr-x")}  ${span("t-acc", "json-flattener/".padEnd(17))}${span("t-dim", "runs in this browser               ")}${span("t-ok", "goto playground")}`);
+    },
+    education() {
+      ln(`${span("t-b", "B.Tech, Computer Science")}  ${span("t-dim", "— BML Munjal University, Gurgaon · 2015–2019")}`);
+      ln(`${span("t-b", "Full Stack Java Developer")} ${span("t-dim", "— Simplilearn Master's, with distinction · Jun 2021")}`);
+      ln(`${" ".repeat(26)}${span("t-dim", "credential ID 33577055  ")}${link(OPEN.cert, "↗ verify")}`);
+    },
+    contact() {
+      ln(`${span("t-acc", "email   ")}  <a href="mailto:harshadkalantri@gmail.com">harshadkalantri@gmail.com</a>`);
+      ln(`${span("t-acc", "linkedin")}  ${link(OPEN.linkedin, "in/harshad-kalantri")}`);
+      ln(`${span("t-acc", "github  ")}  ${link(OPEN.github, "harshadkalantri97")}`);
+      ln(`${span("t-acc", "form    ")}  ${span("t-dim", "goto contact")}`);
+    },
+    resume() {
+      txt("Downloading Harshad-Kalantri-Resume.pdf …", "t-ok");
+      downloadResume();
+    },
+    open(arg) {
+      if (arg === "resume") return CMDS_T.resume();
+      if (!OPEN[arg]) { txt(`usage: open <${Object.keys(OPEN).concat("resume").join("|")}>`, "t-err"); return; }
+      txt(`Opening ${arg} in a new tab …`, "t-ok");
+      window.open(OPEN[arg], "_blank", "noopener");
+    },
+    goto(arg) {
+      if (!arg) { txt(`usage: goto <${Object.keys(SECTIONS).join("|")}>`, "t-err"); return; }
+      gotoSection(arg);
+    },
+    theme(arg) {
+      if (arg && arg !== "light" && arg !== "dark") { txt("usage: theme [light|dark]", "t-err"); return; }
+      if (!arg || arg !== root.dataset.theme) toggleTheme();
+      txt(`theme → ${root.dataset.theme}`, "t-ok");
+    },
+    ls(arg) {
+      if (arg && arg.replace(/\/$/, "") === "projects") return CMDS_T.projects();
+      ln([
+        span("t-ok", "about.md"), span("t-ok", "experience.log"), span("t-ok", "skills.json"), span("t-ok", "impact.log"),
+        span("t-ok", "education.txt"), span("t-ok", "contact.txt"), span("t-acc", "projects/"), span("t-acc2", "resume.pdf"), span("t-warn", "hire.sh")
+      ].join("  "));
+    },
+    cat(arg) {
+      if (!arg) { txt("usage: cat <file>   (try 'ls')", "t-err"); return; }
+      if (arg === "resume.pdf") { txt("cat: resume.pdf: binary file — try 'resume' to download it", "t-warn"); return; }
+      const target = FILES[arg];
+      if (!target) { txt(`cat: ${arg}: No such file or directory`, "t-err"); return; }
+      if (target === "cat-hire") {
+        txt("#!/usr/bin/env bash", "t-dim");
+        txt("# resolves dependencies, runs the test suite, ships the candidate");
+        txt("set -euo pipefail");
+        txt('echo "run me: ./hire.sh"');
+        return;
+      }
+      CMDS_T[target]();
+    },
+    neofetch() {
+      // plain ASCII on purpose: box-drawing glyphs fall back to fonts with other widths and break alignment
+      const logo = [
+        " _   _ _  __",
+        "| | | | |/ /",
+        "| |_| | ' / ",
+        "|  _  | . \\ ",
+        "|_| |_|_|\\_\\",
+        "", "", "", "", ""
+      ];
+      const info = [
+        [null, span("t-b", "harshad") + span("t-dim", "@") + span("t-b", "portfolio")],
+        [null, span("t-dim", "-----------------")],
+        ["OS", "Backend Engineer 5.0"],
+        ["Host", "MYCOM OSI"],
+        ["Kernel", "Java · Spring"],
+        ["Uptime", "5 years"],
+        ["Shell", "bash — but the JVM is home"],
+        ["Packages", "34 skills"],
+        ["Location", "Hyderabad, IN"],
+        ["Status", span("t-ok", "open to opportunities")]
+      ];
+      info.forEach(([k, v], i) => {
+        const left = span("t-acc", (logo[i] || "").padEnd(16));
+        ln(left + (k ? span("t-acc", (k + ":").padEnd(10)) + (v.startsWith("<span") ? v : esc(v)) : v));
+      });
+    },
+    async "./hire.sh"() {
+      termBusy = true;
+      termIn.disabled = true;
+      const steps = [
+        ["[1/4] resolving dependencies ", "java, spring, sql, docker"],
+        ["[2/4] running test suite ", "65% quality lift · 45% faster parsing"],
+        ["[3/4] checking availability ", "open to opportunities"],
+        ["[4/4] packaging candidate ", "harshad-kalantri-5y.jar"]
+      ];
+      for (const [step, result] of steps) {
+        await sleep(420);
+        ln(`${span("t-dim", step.padEnd(34, "."))} ${esc(result)} ${span("t-ok", "✓")}`);
+      }
+      await sleep(380);
+      txt("");
+      ln(`${span("t-ok", "BUILD SUCCESS")} ${span("t-dim", "— opening the contact form …")}`);
+      termBusy = false;
+      termIn.disabled = false;
+      gotoSection("contact");
+    },
+    history() { termHist.forEach((h, i) => ln(`${span("t-dim", String(i + 1).padStart(4))}  ${esc(h)}`)); },
+    clear() { termOut.innerHTML = ""; },
+    date() { txt(new Date().toString()); },
+    pwd() { txt("/home/harshad"); },
+    echo(...args) { txt(args.join(" ")); },
+    java(arg) {
+      if (arg !== "-version" && arg !== "--version") { txt("usage: java -version", "t-dim"); return; }
+      txt('openjdk version "21" 2023-09-19 LTS');
+      txt("Harshad Runtime Environment (build 5y+backend)");
+      txt("Harshad 64-Bit Server VM (tuned GC, low latency, mixed mode)");
+    },
+    sudo(...args) {
+      if (args.join(" ") === "hire-me" || args.join(" ") === "./hire.sh") return CMDS_T["./hire.sh"]();
+      txt("harshad is not in the sudoers file. This incident will be reported.", "t-warn");
+      ln(span("t-dim", "(psst — try 'sudo hire-me')"));
+    },
+    rm() { txt("rm: refusing — this portfolio is immutable infrastructure.", "t-err"); },
+    cd() { txt("cd: it's a single page — try 'goto <section>' instead.", "t-dim"); },
+    exit() { closeTerm(); }
+  };
+  const ALIASES = { hire: "./hire.sh", "hire.sh": "./hire.sh", quit: "exit", q: "exit", cls: "clear", man: "help", "?": "help" };
+  const COMMAND_NAMES = Object.keys(CMDS_T).concat(["hire"]).sort();
+
+  const execLine = async raw => {
+    const line = raw.trim();
+    ln(`<span class="t-ok">harshad@portfolio</span>:<span class="t-acc">~</span>$ ${esc(raw)}`);
+    if (!line) return;
+    termHist.push(line);
+    termHIdx = termHist.length;
+    const [cmd0, ...args] = line.split(/\s+/);
+    const cmd = ALIASES[cmd0.toLowerCase()] || cmd0.toLowerCase();
+    if (cmd === "vim" || cmd === "nano" || cmd === "emacs") { txt(`${cmd0}: not installed here — try 'cat <file>'.`, "t-dim"); return; }
+    const fn = CMDS_T[cmd];
+    if (!fn) { ln(`${span("t-err", `command not found: ${cmd0}`)} ${span("t-dim", "— type")} ${span("t-acc", "help")}`); return; }
+    await fn(...args);
+  };
+
+  const complete = () => {
+    const val = termIn.value;
+    const parts = val.split(/\s+/);
+    let pool, prefix, keep;
+    if (parts.length <= 1) {
+      pool = COMMAND_NAMES; prefix = parts[0] || ""; keep = "";
+    } else {
+      const c = (ALIASES[parts[0]] || parts[0]).toLowerCase();
+      pool = c === "cat" ? Object.keys(FILES).concat("resume.pdf")
+        : c === "goto" ? Object.keys(SECTIONS)
+        : c === "open" ? Object.keys(OPEN).concat("resume")
+        : c === "theme" ? ["light", "dark"]
+        : c === "ls" ? ["projects/"] : [];
+      prefix = parts[parts.length - 1];
+      keep = parts.slice(0, -1).join(" ") + " ";
+    }
+    const hits = pool.filter(p => p.startsWith(prefix));
+    if (hits.length === 1) termIn.value = keep + hits[0] + (parts.length <= 1 ? " " : "");
+    else if (hits.length > 1) {
+      ln(`<span class="t-ok">harshad@portfolio</span>:<span class="t-acc">~</span>$ ${esc(val)}`);
+      ln(hits.map(h => span("t-acc", h)).join("   "));
+      // extend to the longest common prefix
+      let lcp = hits[0];
+      for (const h of hits) while (!h.startsWith(lcp)) lcp = lcp.slice(0, -1);
+      termIn.value = keep + lcp;
+    }
+  };
+
+  const boot = () => {
+    termBooted = true;
+    const now = new Date();
+    ln(span("t-b", "Harshad OS 5.0") + span("t-dim", " — tty1"));
+    ln(span("t-dim", `Last login: ${now.toDateString()} ${now.toTimeString().slice(0, 8)} from recruiter-laptop`));
+    ln(`Type ${span("t-acc", "help")} to list commands, or try ${span("t-acc", "neofetch")}.`);
+    txt("");
+  };
+
+  const openTerm = () => {
+    termLastFocus = document.activeElement;
+    term.classList.add("open");
+    document.body.classList.add("nav-open");
+    if (!termBooted) boot();
+    setTimeout(() => termIn.focus(), 30);
+  };
+  const closeTerm = () => {
+    if (!term.classList.contains("open")) return;
+    term.classList.remove("open");
+    document.body.classList.remove("nav-open");
+    termLastFocus?.focus?.({ preventScroll: true });
+  };
+
+  $("#openTerm").addEventListener("click", openTerm);
+  $("#navTerm").addEventListener("click", openTerm);
+  term.addEventListener("click", e => {
+    if (e.target.closest("[data-tclose]")) { closeTerm(); return; }
+    if (e.target.closest(".term-body") && !e.target.closest("a") && !getSelection().toString()) termIn.focus();
+  });
+
+  termIn.addEventListener("keydown", async e => {
+    if (termBusy) { e.preventDefault(); return; }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const v = termIn.value;
+      termIn.value = "";
+      await execLine(v);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (termHIdx > 0) termIn.value = termHist[--termHIdx];
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (termHIdx < termHist.length - 1) termIn.value = termHist[++termHIdx];
+      else { termHIdx = termHist.length; termIn.value = ""; }
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      complete();
+    } else if (e.ctrlKey && e.key.toLowerCase() === "l") {
+      e.preventDefault();
+      termOut.innerHTML = "";
+    } else if (e.ctrlKey && e.key.toLowerCase() === "c") {
+      if (getSelection().toString()) return; // let real copy through
+      e.preventDefault();
+      ln(`<span class="t-ok">harshad@portfolio</span>:<span class="t-acc">~</span>$ ${esc(termIn.value)}^C`);
+      termIn.value = "";
+    }
+  });
+
+  addEventListener("keydown", e => {
+    if (term.classList.contains("open")) {
+      if (e.key === "Escape") { e.preventDefault(); closeTerm(); }
+      return;
+    }
+    const tag = (e.target.tagName || "").toLowerCase();
+    const typing = tag === "input" || tag === "textarea" || tag === "select" || e.target.isContentEditable;
+    if (e.key === "`" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey && !cmdk.classList.contains("open")) {
+      e.preventDefault();
+      openTerm();
+    }
   });
 
   /* ---------- hero particle network ---------- */

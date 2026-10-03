@@ -23,10 +23,15 @@ python -m http.server 8777
 |------|---------|
 | `index.html` | The entire site |
 | `Harshad-Kalantri-Resume.pdf` | Served by the "Download résumé" button |
+| `og-image.png` | 1200×630 link-preview card for LinkedIn, WhatsApp, Slack, X |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is, skipping Jekyll |
 
 ## Features
 
+- **JSON playground** — a clean-room, in-browser take on the Generic JSON Parser: explode nested
+  arrays into rows or flatten to one row, group by any column, export as CSV or typed SQL
+- **Terminal mode** — press `` ` `` (or the `>_` button) for a shell with `help`, `neofetch`,
+  `impact`, `goto <section>`, tab completion and history. Try `./hire.sh`.
 - Light/dark theme, persisted to `localStorage`
 - Particle-network hero canvas (pauses when offscreen or the tab is hidden)
 - Scroll-driven reveals, scroll-spy nav, animated timeline and progress rings
