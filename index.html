@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Harshad Kalantri | Backend Engineer</title>
 <meta name="description" content="Harshad Kalantri - Software Development Engineer with 5 years building high-performance Java/Spring backend services, parsers, ETL pipelines and Dockerized deployments." />
 <meta name="author" content="Harshad Kalantri" />
@@ -691,11 +691,57 @@ kbd{
 #termIn{flex:1;min-width:0;background:none;border:0;outline:none;color:#fff;font:inherit;caret-color:#22d3ee;padding:0}
 .term-hint{display:flex;flex-wrap:wrap;gap:6px 18px;padding:9px 16px;border-top:1px solid rgba(255,255,255,.08);background:#0b0e15;font:11.5px "JetBrains Mono",monospace;color:#5d6678}
 .term-hint kbd{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#98a2b6}
+/* tappable commands replace the keyboard hints on touch screens (no Tab or arrow keys there) */
+.term-quick{display:none;gap:8px;width:100%;overflow-x:auto;scrollbar-width:none}
+.term-quick::-webkit-scrollbar{display:none}
+.term-quick button{
+  flex:none;min-height:40px;padding:0 14px;border-radius:999px;white-space:nowrap;
+  border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:#d6deeb;font:13px "JetBrains Mono",monospace;
+}
+.term-quick button:active{background:rgba(34,211,238,.16);border-color:#22d3ee}
 @media (max-width:600px){
   .term{padding:0}
-  .term-win{width:100%;height:100svh;border-radius:0}
+  .term-win{width:100%;height:100%;border-radius:0}
   .term-body{font-size:12.5px;padding:14px}
-  .term-hint{display:none}
+}
+
+/* ============================================================
+   PHONES AND TOUCH
+   ============================================================ */
+/* on phones and short screens the hero is taller than the viewport, so the pinned hint would sit on content */
+@media (max-width:980px),(max-height:720px){
+  .scroll-cue{display:none}
+}
+/* iOS Safari zooms the page into any field whose text is under 16px */
+@media (max-width:860px),(pointer:coarse){
+  input:not([type=checkbox]):not([type=hidden]),textarea,select{font-size:16px !important}
+}
+/* finger-sized targets; desktop sizes stay as they are */
+@media (pointer:coarse){
+  .pg-chip,.pg-tab,.pg-copy,.pg-sel select,.filter,.chip,.link-btn{min-height:44px}
+  .icon-btn{width:44px;height:44px}
+  .tl-toggle{width:40px;height:40px}
+  .term-x{width:40px;height:40px}
+  .shell-cta{min-height:48px}
+  .shell-cta kbd,.term-hint .keys{display:none}
+  .term-hint{padding:10px 12px max(10px,env(safe-area-inset-bottom))}
+  .term-quick{display:flex}
+}
+/* the smallest labels get a readable floor on phones */
+@media (max-width:600px){
+  /* the pinned nav logo already returns to the top; the floating button only covered form fields */
+  .totop{display:none}
+  /* experience timeline: narrower gutter so role details are not squeezed into one item per line */
+  .timeline{padding-left:22px}
+  .timeline::before{left:4px}
+  .tl-item::before{left:-23px;width:12px;height:12px}
+  .tl-head{padding:16px;gap:12px}
+  .tl-inner{padding:0 16px 18px}
+}
+@media (max-width:480px){
+  .tl-head .logo{display:none}
+  .brand .who small,.case-body dt,.pg-lbl,.cred .kicker,.tag,.pg-out th,.pg-status,.pg-bhead{font-size:12px}
+  .wrap{padding-inline:18px}
 }
 
 /* ============================================================
@@ -1344,8 +1390,17 @@ kbd{
       </div>
     </div>
     <div class="term-hint">
-      <span><kbd>Tab</kbd> complete</span><span><kbd>Up</kbd><kbd>Down</kbd> history</span>
-      <span><kbd>Ctrl</kbd><kbd>L</kbd> clear</span><span><kbd>Esc</kbd> close</span>
+      <span class="keys"><kbd>Tab</kbd> complete</span><span class="keys"><kbd>Up</kbd><kbd>Down</kbd> history</span>
+      <span class="keys"><kbd>Ctrl</kbd><kbd>L</kbd> clear</span><span class="keys"><kbd>Esc</kbd> close</span>
+      <div class="term-quick" role="group" aria-label="Quick commands">
+        <button type="button" data-cmd="help">help</button>
+        <button type="button" data-cmd="whoami">whoami</button>
+        <button type="button" data-cmd="impact">impact</button>
+        <button type="button" data-cmd="projects">projects</button>
+        <button type="button" data-cmd="neofetch">neofetch</button>
+        <button type="button" data-cmd="./hire.sh">./hire.sh</button>
+        <button type="button" data-cmd="clear">clear</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2568,23 +2623,43 @@ kbd{
     txt("");
   };
 
+  // touch screens: no auto-focus (it would throw the keyboard over the boot text) and quick-command buttons instead
+  const coarse = matchMedia("(pointer:coarse)");
+
+  // keep the terminal inside the visible area while an on-screen keyboard is open
+  const vv = window.visualViewport;
+  const fitTerm = () => {
+    const keyboardUp = vv && term.classList.contains("open") && vv.height < innerHeight - 60;
+    term.style.top = keyboardUp ? vv.offsetTop + "px" : "";
+    term.style.height = keyboardUp ? vv.height + "px" : "";
+    term.style.bottom = keyboardUp ? "auto" : "";
+    if (keyboardUp) termBody.scrollTop = termBody.scrollHeight;
+  };
+  if (vv) { vv.addEventListener("resize", fitTerm); vv.addEventListener("scroll", fitTerm); }
+
   const openTerm = () => {
     termLastFocus = document.activeElement;
     term.classList.add("open");
     document.body.classList.add("nav-open");
     if (!termBooted) boot();
-    setTimeout(() => termIn.focus(), 30);
+    if (!coarse.matches) setTimeout(() => termIn.focus(), 30);
   };
   const closeTerm = () => {
     if (!term.classList.contains("open")) return;
     term.classList.remove("open");
     document.body.classList.remove("nav-open");
+    fitTerm();
     termLastFocus?.focus?.({ preventScroll: true });
   };
 
   $("#openTerm").addEventListener("click", openTerm);
-  term.addEventListener("click", e => {
+  term.addEventListener("click", async e => {
     if (e.target.closest("[data-tclose]")) { closeTerm(); return; }
+    const quick = e.target.closest(".term-quick button");
+    if (quick) {
+      if (!termBusy) await execLine(quick.dataset.cmd);
+      return;
+    }
     if (e.target.closest(".term-body") && !e.target.closest("a") && !getSelection().toString()) termIn.focus();
   });
 
