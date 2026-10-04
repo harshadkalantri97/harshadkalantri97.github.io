@@ -1,0 +1,348 @@
+@import "tailwindcss";
+
+/* Inter, Latin subset only: the package has no per-subset stylesheet for the variable font */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2") format("woff2-variations");
+}
+
+/* ============================================================
+   THEME: Tailwind colours point at runtime tokens, so one class
+   (bg-surface, text-dim, border-line ...) works in both themes
+   ============================================================ */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elev: var(--bg-elev);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--text);
+  --color-dim: var(--text-dim);
+  --color-faint: var(--text-faint);
+  --color-a1: var(--a1);
+  --color-a2: var(--a2);
+  --color-a3: var(--a3);
+}
+
+@theme {
+  --color-ok: #34d399;
+  --color-bad: #f87171;
+  --font-sans: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --breakpoint-xs: 30rem;    /* 480px */
+  --breakpoint-nav: 67.5rem; /* 1080px: full nav bar from here up */
+  --animate-ping-soft: ping-soft 2s ease-out infinite;
+  --animate-blink: blink 1s steps(1) infinite;
+
+  @keyframes ping-soft { 0% { transform: scale(1); opacity: .7 } 70%, 100% { transform: scale(3); opacity: 0 } }
+  @keyframes blink { 50% { opacity: 0 } }
+}
+
+/* ============================================================
+   TOKENS + BASE
+   ============================================================ */
+@layer base {
+  :root {
+    --bg: #06070b;
+    --bg-elev: #0c0e15;
+    --surface: rgba(255, 255, 255, .035);
+    --surface-2: rgba(255, 255, 255, .06);
+    --line: rgba(255, 255, 255, .10);
+    --line-strong: rgba(255, 255, 255, .18);
+    --text: #e8ecf4;
+    --text-dim: #98a2b6;
+    --text-faint: #6b7488;
+    --a1: #22d3ee;
+    --a2: #818cf8;
+    --a3: #fbbf24;
+    --glow: rgba(34, 211, 238, .30);
+    --shadow: 0 20px 60px -20px rgba(0, 0, 0, .75);
+    --grid-line: rgba(255, 255, 255, .035);
+    --nav-h: 68px;
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] {
+    --bg: #f7f8fc;
+    --bg-elev: #ffffff;
+    --surface: rgba(10, 14, 30, .028);
+    --surface-2: rgba(10, 14, 30, .055);
+    --line: rgba(10, 14, 30, .10);
+    --line-strong: rgba(10, 14, 30, .20);
+    --text: #0d1220;
+    --text-dim: #4b5568;
+    --text-faint: #7b8494;
+    --a1: #0891b2;
+    --a2: #5b5ff0;
+    --a3: #b45309;
+    --glow: rgba(8, 145, 178, .20);
+    --shadow: 0 18px 50px -24px rgba(16, 24, 40, .35);
+    --grid-line: rgba(10, 14, 30, .04);
+    color-scheme: light;
+  }
+
+  html { scroll-behavior: smooth }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+
+  /* plain glyphs only: stop fonts from merging characters like -> or != into symbols */
+  *, *::before, *::after { font-variant-ligatures: none !important; font-feature-settings: "liga" 0, "calt" 0 !important }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body.lock, body.nav-lock { overflow: hidden }
+
+  h1, h2, h3, h4 { line-height: 1.15; letter-spacing: -.02em; font-weight: 700 }
+  button:not(:disabled), [role="tab"], select { cursor: pointer }
+  code, kbd, .mono { font-family: var(--font-mono) }
+  :focus-visible { outline: 2px solid var(--a1); outline-offset: 3px; border-radius: 6px }
+  ::selection { background: var(--a2); color: #fff }
+  kbd {
+    font-size: 11px; padding: 2px 6px; border-radius: 5px;
+    border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--text-dim);
+  }
+
+  /* ambient page backdrop */
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background:
+      radial-gradient(900px 600px at 12% -5%, color-mix(in srgb, var(--a1) 18%, transparent), transparent 60%),
+      radial-gradient(800px 700px at 92% 8%, color-mix(in srgb, var(--a2) 18%, transparent), transparent 62%),
+      radial-gradient(900px 900px at 50% 110%, color-mix(in srgb, var(--a2) 12%, transparent), transparent 60%);
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .7;
+    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 30%, transparent 78%);
+  }
+
+  /* iOS Safari zooms the page into any field whose text is under 16px */
+  @media (max-width: 860px), (pointer: coarse) {
+    input:not([type=checkbox]):not([type=hidden]), textarea, select { font-size: 16px !important }
+  }
+}
+
+/* ============================================================
+   COMPONENTS: the few patterns that repeat across sections
+   ============================================================ */
+@layer components {
+  .wrap { width: 100%; max-width: 1160px; margin-inline: auto; padding-inline: 22px }
+  @media (max-width: 480px) { .wrap { padding-inline: 18px } }
+
+  .grad {
+    background: linear-gradient(100deg, var(--a1), var(--a2) 55%, var(--a1));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; margin-bottom: 18px;
+    font: 12px var(--font-mono); letter-spacing: .16em; text-transform: uppercase;
+    color: var(--a1); border: 1px solid var(--line); background: var(--surface);
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--a1); box-shadow: 0 0 12px var(--a1) }
+
+  /* glass card with a spotlight that follows the pointer */
+  .card {
+    position: relative; overflow: hidden;
+    border: 1px solid var(--line); border-radius: 18px; background: var(--surface);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    transition: border-color .3s, transform .3s, box-shadow .3s;
+  }
+  .card::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .35s;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--a1) 12%, transparent), transparent 42%);
+  }
+  .card:hover::before { opacity: 1 }
+  .card:hover { border-color: var(--line-strong); box-shadow: var(--shadow) }
+
+  /* scroll reveal: an animation (not a transition) so the delay never slows hover effects,
+     and "translate" (not "transform") so it never fights the card tilt */
+  .reveal { opacity: 0 }
+  .reveal.in { opacity: 1; animation: rise .7s cubic-bezier(.2, .7, .3, 1) backwards; animation-delay: var(--d, 0s) }
+  @keyframes rise { from { opacity: 0; translate: 0 26px } to { opacity: 1; translate: 0 0 } }
+
+  .btn {
+    position: relative; display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 22px; border-radius: 13px; font-weight: 600; font-size: 15px;
+    border: 1px solid transparent; transition: transform .2s, box-shadow .2s, background .2s, border-color .2s;
+  }
+  .btn:active { transform: translateY(1px) scale(.99) }
+  .btn-primary { background: linear-gradient(120deg, var(--a1), var(--a2)); color: #03121a; box-shadow: 0 12px 34px -12px var(--glow) }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 44px -14px var(--glow) }
+  .btn-ghost { border-color: var(--line-strong); background: var(--surface); color: var(--text) }
+  .btn-ghost:hover { background: var(--surface-2); transform: translateY(-2px); border-color: var(--a1) }
+  .btn[disabled] { opacity: .6; cursor: not-allowed }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px; border-radius: 11px;
+    border: 1px solid var(--line); background: var(--surface); font-size: 13.5px; color: var(--text-dim); transition: .2s;
+  }
+  .chip:hover { color: var(--text); border-color: var(--line-strong); transform: translateY(-2px) }
+  .chip svg { color: var(--a1); flex: none }
+
+  .tag {
+    font: 11.5px var(--font-mono); padding: 4px 10px; border-radius: 7px;
+    border: 1px solid var(--line); background: var(--surface-2); color: var(--text-dim);
+  }
+
+  .link-btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 11px;
+    border: 1px solid var(--line); background: var(--surface-2); font-size: 13.5px; font-weight: 600; transition: .2s;
+  }
+  .link-btn:hover { border-color: var(--a1); color: var(--a1); transform: translateY(-2px) }
+
+  .icon-btn {
+    width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center;
+    border: 1px solid var(--line); background: var(--surface); color: var(--text-dim); transition: .2s;
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--line-strong); transform: translateY(-1px) }
+
+  .glyph {
+    display: grid; place-items: center; flex: none;
+    font: 700 12px var(--font-mono); color: var(--a1);
+    background: color-mix(in srgb, var(--a1) 12%, transparent);
+  }
+
+  /* finger-sized targets on touch screens; desktop sizes stay as they are */
+  @media (pointer: coarse) {
+    .chip, .link-btn { min-height: 44px }
+    .icon-btn { width: 44px; height: 44px }
+  }
+  @media (max-width: 480px) { .tag { font-size: 12px } }
+}
+
+/* ============================================================
+   EXPERIENCE TIMELINE
+   ============================================================ */
+.timeline { position: relative; padding-left: 34px }
+.timeline::before {
+  content: ""; position: absolute; left: 9px; top: 6px; bottom: 6px; width: 2px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--a1), var(--a2), transparent);
+  transform-origin: top; transform: scaleY(var(--draw, 0)); transition: transform 1.2s ease;
+}
+.tl-dot {
+  position: absolute; left: -30px; top: 26px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--a1); box-shadow: 0 0 0 4px color-mix(in srgb, var(--a1) 14%, transparent);
+  transition: .3s;
+}
+.open > .tl-dot { background: var(--a1); box-shadow: 0 0 18px var(--glow) }
+.tl-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s cubic-bezier(.4, 0, .2, 1) }
+.open .tl-body { grid-template-rows: 1fr }
+.tl-body > div { overflow: hidden }
+.tl-list li { position: relative; padding-left: 22px; color: var(--text-dim); font-size: 14.5px; margin-bottom: 10px }
+.tl-list li::before { content: ""; position: absolute; left: 4px; top: .68em; width: 6px; height: 6px; border-radius: 50%; background: var(--a1) }
+@media (max-width: 600px) {
+  .timeline { padding-left: 22px }
+  .timeline::before { left: 4px }
+  .tl-dot { left: -23px; width: 12px; height: 12px }
+}
+
+/* dialogs */
+@keyframes fade { from { opacity: 0 } }
+@keyframes pop { from { opacity: 0; transform: translateY(-10px) scale(.98) } }
+
+/* hero scroll hint */
+@keyframes wheel { 0% { opacity: 0; translate: -50% 0 } 30% { opacity: 1 } 100% { opacity: 0; translate: -50% 12px } }
+
+/* skills: chips pop in again whenever the filter changes */
+.skill-in { animation: skill-in .35s cubic-bezier(.2, .7, .3, 1) backwards }
+@keyframes skill-in { from { opacity: 0; scale: .92 } }
+
+/* project banner grid drifts on hover */
+.proj-top::after {
+  content: ""; position: absolute; inset: 0; opacity: .5; transition: transform .6s ease;
+  background-image: linear-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .07) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+.card:hover .proj-top::after { transform: translate(-13px, -13px) }
+
+/* ============================================================
+   JSON PLAYGROUND OUTPUT
+   ============================================================ */
+.pg-out { font: 12.5px/1.55 var(--font-mono) }
+.pg-out pre { margin: 0; padding: 14px 16px; white-space: pre; color: var(--text-dim) }
+.pg-out pre .kw { color: var(--a2); font-weight: 500 }
+.pg-out table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100% }
+.pg-out th, .pg-out td { padding: 7px 12px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap }
+.pg-out th { position: sticky; top: 0; z-index: 1; background: var(--bg-elev); color: var(--a1); font-weight: 500; font-size: 11.5px }
+.pg-out td { color: var(--text-dim) }
+.pg-out td.num { text-align: right; color: var(--text) }
+.pg-out .rn { color: var(--text-faint); text-align: right; user-select: none }
+@media (max-width: 480px) { .pg-out th { font-size: 12px } }
+
+/* ============================================================
+   TERMINAL (always dark, whatever the page theme)
+   ============================================================ */
+.term-body a { color: #22d3ee; text-decoration: underline; text-underline-offset: 3px }
+.t-ok { color: #34d399 } .t-acc { color: #22d3ee } .t-acc2 { color: #a5b4fc }
+.t-warn { color: #fbbf24 } .t-dim { color: #6b7488 } .t-err { color: #f87171 } .t-b { color: #fff; font-weight: 700 }
+.term-body kbd, .term-hint kbd { border-color: rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .06); color: #98a2b6 }
+
+/* ============================================================
+   TECH CURSOR
+   ============================================================ */
+html.tc-on, html.tc-on * { cursor: none !important }
+html.tc-on input:not([type=checkbox]):not([type=radio]):not([type=submit]),
+html.tc-on textarea, html.tc-on [contenteditable="true"] { cursor: text !important }
+
+.tc { position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0; transition: opacity .2s }
+.tc.show { opacity: 1 }
+.tc.text { opacity: 0 }
+.tc-p { position: fixed; left: 0; top: 0; will-change: transform }
+
+/* the dot is the real hotspot: it sits exactly under the pointer */
+.tc-dot {
+  display: block; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%;
+  background: var(--a1); box-shadow: 0 0 12px var(--glow);
+  transition: width .2s, height .2s, margin .2s, background .2s, scale .15s;
+}
+.tc.hot .tc-dot {
+  width: 30px; height: 30px; margin: -15px 0 0 -15px;
+  background: color-mix(in srgb, var(--a1) 12%, transparent); box-shadow: inset 0 0 0 1.5px var(--a1);
+}
+.tc.down .tc-dot { scale: .7 }
+
+/* the symbol tag trails a little behind, like a label on the pointer */
+.tc-tag {
+  display: block; translate: 14px 16px; padding: 4px 8px; border-radius: 8px; white-space: pre;
+  font: 700 12px/1.2 var(--font-mono); color: var(--a1);
+  border: 1px solid color-mix(in srgb, var(--a1) 45%, transparent);
+  background: color-mix(in srgb, var(--bg-elev) 85%, transparent);
+  box-shadow: 0 8px 22px -10px rgba(0, 0, 0, .6);
+  transition: translate .25s, background .2s, color .2s, rotate .3s;
+}
+.tc.hot .tc-tag { translate: 20px 22px; background: var(--a1); color: #03121a; border-color: transparent }
+.tc.roll .tc-tag { rotate: -8deg }
+
+/* ============================================================
+   PRINT = ONE-PAGE RESUME
+   ============================================================ */
+@media print {
+  body::before, body::after, canvas, header, .no-print, .tc { display: none !important }
+  body { background: #fff; color: #000; font-size: 11px }
+  section { padding: 14px 0 !important; break-inside: avoid }
+  #top { min-height: auto !important; padding-top: 0 !important }
+  .card { border: 1px solid #ddd; background: #fff; box-shadow: none; break-inside: avoid }
+  .tl-body { grid-template-rows: 1fr !important }
+  .eyebrow { display: none }
+  .grad { color: #000; -webkit-text-fill-color: #000 }
+  a { color: #000 }
+  .reveal { opacity: 1 !important; animation: none !important }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 }
+  .reveal.in, .skill-in { animation: none }
+  .animate-ping-soft, .animate-blink { animation: none }
+}

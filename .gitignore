@@ -1,3 +1,7 @@
+# dependencies + build output
+node_modules/
+dist/
+
 # local preview + OS cruft
 .DS_Store
 Thumbs.db
